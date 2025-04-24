@@ -50,7 +50,7 @@ export default function Home() {
               width={250}
               height={250}
               alt="Damien"
-              className="rounded-lg border border-white"
+              className="rounded-lg border border-white w-full max-w-[250px]"
             />
           </div>
         )}
