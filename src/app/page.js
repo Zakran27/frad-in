@@ -1,71 +1,81 @@
 'use client'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { useState } from 'react'
+import Link from 'next/link'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
-import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 
 export default function Home() {
+  const [title, setTitle] = useState(null)
   const [showDamien, setShowDamien] = useState(false)
 
-  return (
-    <main className="min-h-screen bg-black text-white px-4 sm:px-8 md:px-12 lg:px-24 xl:px-36 py-12">
-      {/* Header */}
-      <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-500 mb-3">Welcome to my site 🎉</h1>
-      <p className="text-lg text-gray-300 mb-8">
-        A place to explore my tech projects, side ideas and experiments.
-      </p>
+  useEffect(() => {
+    const options = [
+      { text: '🩰 Ballerrrinaaa ☕ Cappuccciiiinnnaa' },
+      { text: 'Aaarhghaaggga..... 💀' },
+      { text: '😲 (**visage choqué**)' },
+      { isLink: true, text: 'Click here to know what time it is 🕒', href: 'http://quelleheureestilenjoy.com/' },
+      { text: 'hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm' },
+    ]
+    const random = options[Math.floor(Math.random() * options.length)]
+    setTitle(random)
+  }, [])
 
-      {/* Damien section */}
+  return (
+    <main className="min-h-screen bg-black text-white px-6 py-12 md:px-20 lg:px-40 max-w-7xl mx-auto">
+      <h1 className="text-4xl md:text-5xl font-bold text-blue-500 mb-4">
+        {title?.isLink ? (
+          <Link href={title.href} target="_blank" rel="noopener noreferrer" className="hover:underline">
+            {title.text}
+          </Link>
+        ) : (
+          title?.text
+        )}
+      </h1>
+
+      <p className="text-lg mb-8 text-gray-300">A playground of side projects, dumb jokes, and weird experiments.</p>
+
+      {/* Damien toggle section */}
       <div className="mb-10">
         <button
           onClick={() => setShowDamien(!showDamien)}
-          className="flex items-center gap-2 text-pink-400 font-semibold transition hover:text-pink-300"
+          className="text-pink-400 font-semibold mb-4 hover:underline transition flex items-center gap-2"
         >
-          Your grosse daronne Damien :D {showDamien ? <FiChevronUp /> : <FiChevronDown />}
+          {showDamien ? 'Hide Damien 🐶⬆️' : 'Show Damien 🐶⬇️'}
         </button>
         {showDamien && (
-          <div className="mt-4">
+          <div>
+            <p className="mb-2">Your grosse daronne Damien :D</p>
             <Image
               src="/damien.jpg"
               width={250}
               height={250}
               alt="Damien"
-              className="rounded-lg border border-white shadow-lg"
+              className="rounded-lg border border-white"
             />
           </div>
         )}
       </div>
 
-      {/* Projects */}
-      <section>
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6">Latest Projects</h2>
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          <div className="bg-gray-900 border border-gray-700 rounded-xl p-6 shadow hover:shadow-lg transition">
-            <h3 className="text-xl font-semibold mb-2">RapLyrics Finder</h3>
-            <p className="text-gray-400 text-sm">
-              A search engine for all French rap lyrics (WIP).
-            </p>
-          </div>
+      {/* Project cards */}
+      <h2 className="text-2xl md:text-3xl font-bold mb-6">Latest Projects</h2>
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition">
+          <h3 className="text-xl font-semibold mb-2">YouTube Meme Encyclopedia</h3>
+          <p className="text-gray-400 text-sm">The ultimate database of French YouTube references and cult memes.</p>
         </div>
-      </section>
+        <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition">
+          <h3 className="text-xl font-semibold mb-2">Anything Rap Related Project</h3>
+          <p className="text-gray-400 text-sm">bendo na bendo.</p>
+        </div>
+      </div>
 
-      {/* Footer */}
-      <footer className="mt-16 text-sm text-gray-400 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex gap-4 items-center">
-          <a
-            href="https://github.com/Zakran27"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white flex items-center gap-2"
-          >
+      {/* Social links */}
+      <footer className="mt-16 flex flex-col items-start gap-4 text-sm text-gray-400">
+        <div className="flex items-center gap-4">
+          <a href="https://github.com/Zakran27" target="_blank" rel="noopener noreferrer" className="hover:text-white flex items-center gap-2">
             <FaGithub /> GitHub
           </a>
-          <a
-            href="https://x.com/zakran27"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-white flex items-center gap-2"
-          >
+          <a href="https://x.com/zakran27" target="_blank" rel="noopener noreferrer" className="hover:text-white flex items-center gap-2">
             <FaTwitter /> Twitter
           </a>
         </div>
