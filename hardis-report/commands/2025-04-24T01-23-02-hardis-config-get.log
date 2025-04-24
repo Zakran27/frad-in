@@ -1,0 +1,18 @@
+--level project --json--level user --json--level project --json[sfdx-hardis] Defined thomasf as git user.name
+[sfdx-hardis] Updated config file config/user/.sfdx-hardis.thomasf.yml with values: 
+{
+  "installedApps": [
+    "git"
+  ]
+}
+[sfdx-hardis] Updated config file config/user/.sfdx-hardis.thomasf.yml with values: 
+{
+  "installedApps": [
+    "git"
+  ]
+}
+[sfdx-hardis] Defined thomasf as git user.name
+[sfdx-hardis] {}
+[sfdx-hardis]  (temporary)
+[sfdx-hardis] {"installedApps":["git"]}
+[sfdx-hardis] {}

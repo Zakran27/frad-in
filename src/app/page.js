@@ -74,6 +74,13 @@ export default function Home() {
         >
           💀
         </a>
+        <a
+          href="/sanity-checker"
+          className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex flex-col justify-between"
+        >
+          <h3 className="text-xl font-semibold mb-2">Chrono-dégénérescence</h3>
+          <p className="text-gray-400 text-sm">🕒 a real-time roast engine</p>
+        </a>
       </div>
 
       {/* Social links */}
