@@ -100,6 +100,17 @@ export default function Home() {
           <h3 className="text-xl font-semibold mb-2">rot.</h3>
           <p className="text-gray-400 text-sm">🕒</p>
         </Link>
+
+        <Link
+          href="/radar"
+          className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition"
+        >
+          <h3 className="text-xl font-semibold mb-2">🍽️ Restaurant Radar</h3>
+          <p className="text-gray-400 text-sm">
+            Find spots around you, instantly.
+          </p>
+        </Link>
+
       </div>
     </main>
   );
