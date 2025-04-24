@@ -1,39 +1,75 @@
 'use client'
-
-import { FaMicrophoneAlt } from 'react-icons/fa'
-import { AiOutlineCopyrightCircle } from 'react-icons/ai'
+import Image from 'next/image'
+import { useState } from 'react'
+import { FaGithub, FaTwitter } from 'react-icons/fa'
+import { FiChevronDown, FiChevronUp } from 'react-icons/fi'
 
 export default function Home() {
+  const [showDamien, setShowDamien] = useState(false)
+
   return (
-    <main className="min-h-screen px-6 py-16 md:py-24 bg-black text-white font-sans flex flex-col items-center">
-      <section className="text-center max-w-3xl">
-        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-blue-500 leading-tight">
-          Welcome to my personal website
-        </h1>
-        <p className="text-lg md:text-xl text-gray-300 mb-16">
-          Explore my latest tech projects, side experiments and digital tools.
-        </p>
-      </section>
+    <main className="min-h-screen bg-black text-white px-4 sm:px-8 md:px-12 lg:px-24 xl:px-36 py-12">
+      {/* Header */}
+      <h1 className="text-4xl sm:text-5xl font-extrabold text-blue-500 mb-3">Welcome to my site 🎉</h1>
+      <p className="text-lg text-gray-300 mb-8">
+        A place to explore my tech projects, side ideas and experiments.
+      </p>
 
-      <section className="w-full max-w-2xl">
-        <h2 className="text-2xl font-bold mb-8 text-white text-center">
-          🧪 Featured Project
-        </h2>
-
-        <div className="mb-12 px-4 md:px-0">
-          <div className="flex items-center gap-3 mb-2">
-            <FaMicrophoneAlt className="text-pink-400 text-xl" />
-            <h3 className="text-xl font-semibold">RapLyrics Finder</h3>
+      {/* Damien section */}
+      <div className="mb-10">
+        <button
+          onClick={() => setShowDamien(!showDamien)}
+          className="flex items-center gap-2 text-pink-400 font-semibold transition hover:text-pink-300"
+        >
+          Your grosse daronne Damien :D {showDamien ? <FiChevronUp /> : <FiChevronDown />}
+        </button>
+        {showDamien && (
+          <div className="mt-4">
+            <Image
+              src="/damien.jpg"
+              width={250}
+              height={250}
+              alt="Damien"
+              className="rounded-lg border border-white shadow-lg"
+            />
           </div>
-          <p className="text-gray-400 ml-8">
-            A search engine to browse all French rap lyrics. (Work in progress)
-          </p>
+        )}
+      </div>
+
+      {/* Projects */}
+      <section>
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6">Latest Projects</h2>
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+          <div className="bg-gray-900 border border-gray-700 rounded-xl p-6 shadow hover:shadow-lg transition">
+            <h3 className="text-xl font-semibold mb-2">RapLyrics Finder</h3>
+            <p className="text-gray-400 text-sm">
+              A search engine for all French rap lyrics (WIP).
+            </p>
+          </div>
         </div>
       </section>
 
-      <footer className="text-center text-sm text-gray-500 mt-auto flex items-center justify-center gap-1">
-        <AiOutlineCopyrightCircle />
-        <p>2025 – Thomas Fradin de Bellabre. All rights reserved.</p>
+      {/* Footer */}
+      <footer className="mt-16 text-sm text-gray-400 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex gap-4 items-center">
+          <a
+            href="https://github.com/Zakran27"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white flex items-center gap-2"
+          >
+            <FaGithub /> GitHub
+          </a>
+          <a
+            href="https://x.com/zakran27"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white flex items-center gap-2"
+          >
+            <FaTwitter /> Twitter
+          </a>
+        </div>
+        <p>© 2025 — Thomas Fradin de Bellabre. All rights reserved.</p>
       </footer>
     </main>
   )
