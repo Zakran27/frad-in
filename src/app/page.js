@@ -59,6 +59,7 @@ export default function Home() {
       {/* Project cards */}
       <h2 className="text-2xl md:text-3xl font-bold mb-6">Latest Projects</h2>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+
         <a
           href="/talaref"
           className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex flex-col justify-between"
@@ -71,6 +72,7 @@ export default function Home() {
           <h3 className="text-xl font-semibold mb-2">B2B</h3>
           <p className="text-gray-400 text-sm">bendo na bendo.</p>
         </div>
+
         <a
           href="/flops"
           className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex items-center justify-center text-3xl"
@@ -78,6 +80,7 @@ export default function Home() {
         >
           💀
         </a>
+
         <a
           href="/sanity-checker"
           className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex flex-col justify-between"
@@ -85,6 +88,7 @@ export default function Home() {
           <h3 className="text-xl font-semibold mb-2">rot.</h3>
           <p className="text-gray-400 text-sm">🕒</p>
         </a>
+
       </div>
 
     </main>
