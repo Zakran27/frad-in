@@ -37,7 +37,7 @@ export default function FlopsPage() {
             </button>
             {openCard === flop.id && (
               <div className="p-6 border-t border-gray-700 bg-gray-950 flex justify-center">
-                {flop.type === 'audio' ? (
+                {flop.media_type === 'audio' ? (
                   <audio controls className="w-full">
                     <source src={flop.link} type="audio/mpeg" />
                     Your browser does not support the audio element.
