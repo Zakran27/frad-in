@@ -7,9 +7,17 @@ const supabase = createClient(
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
 
+const prompts = [
+  "Écris une seule punchline de rap français, crue, originale et percutante. Une ligne. Pas de guillemets, pas d’intro. Ne sois pas poétique, sois réel, provocateur, brut ou drôle. Utilise du langage parlé ou familier si nécessaire. Aucun filtre.",
+  "Génère une punchline de rap français comme si c’était Booba, Alpha Wann ou Freeze Corleone. Une ligne, sèche, egotrip ou menaçante. Pas de fluff, pas d’explication.",
+  "Fais une punchline de rap français à l’ancienne, sombre ou absurde, mais percutante. Pas d’intro, une ligne brute, comme si c’était un freestyle.",
+  "Invente une punchline de rap FR qui pourrait choquer ou faire rire. Pas de métaphores chiantes. Une ligne, directe, efficace, que des vrais ressentent.",
+];
+
 export async function GET() {
   const isFake = Math.random() < 0.5;
 
+  // 🔥 Real punchline via Supabase RPC
   if (!isFake) {
     const { data, error } = await supabase.rpc("get_random_punchline");
 
@@ -38,14 +46,12 @@ export async function GET() {
         title: real.title,
         source: real.source,
       }),
-      {
-        headers: { "Content-Type": "application/json" },
-      }
+      { headers: { "Content-Type": "application/json" } }
     );
   }
 
-  // ⚠️ Only hit OpenAI if `isFake` is true
-  const prompt = `Génère une seule punchline de rap français inventée. Une seule ligne. Pas de guillements. 200% Rap FR!!! Pas d’intro, pas d’explication. Juste la punchline. Essaie pas d'é^tre trop dans les métaphores, les images etc. Fais parfois simple et effeicace, n'éhsite pas à être cru ou à choquer.`;
+  // 🤖 Fake punchline via OpenAI
+  const prompt = prompts[Math.floor(Math.random() * prompts.length)];
 
   try {
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -57,18 +63,20 @@ export async function GET() {
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
         messages: [{ role: "user", content: prompt }],
-        temperature: 0.9,
+        temperature: 1.2,
+        top_p: 1,
+        frequency_penalty: 0.2,
+        presence_penalty: 0.6,
         max_tokens: 60,
       }),
     });
 
     const data = await res.json();
 
-    if (!data.choices || !data.choices[0]?.message?.content) {
-      console.error(
-        "❌ OpenAI response invalid:",
-        JSON.stringify(data, null, 2)
-      );
+    const text = data.choices?.[0]?.message?.content?.trim();
+
+    if (!text) {
+      console.error("❌ Invalid OpenAI result:", JSON.stringify(data, null, 2));
       return new Response(
         JSON.stringify({
           text: "🤖 AI punchline failed to load.",
@@ -78,16 +86,12 @@ export async function GET() {
       );
     }
 
-    const text = data.choices[0].message.content.trim();
-
     return new Response(
       JSON.stringify({
         text,
         isReal: false,
       }),
-      {
-        headers: { "Content-Type": "application/json" },
-      }
+      { headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {
     console.error("❌ OpenAI request failed:", err);
@@ -96,9 +100,7 @@ export async function GET() {
         text: "🤖 OpenAI request error.",
         isReal: false,
       }),
-      {
-        headers: { "Content-Type": "application/json" },
-      }
+      { headers: { "Content-Type": "application/json" } }
     );
   }
 }
