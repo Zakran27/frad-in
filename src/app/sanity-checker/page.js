@@ -36,7 +36,6 @@ export default function SanityChecker() {
 
   return (
     <main className="min-h-screen bg-black text-white px-6 py-20 md:px-32 lg:px-64 flex flex-col items-center justify-center text-center space-y-6">
-      <h1 className="text-4xl font-bold text-blue-500">🧠 Sanity Checker</h1>
       <p className="text-xl text-pink-400">{roast}</p>
 
       {degenerationLevel > 0 && (

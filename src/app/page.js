@@ -60,11 +60,11 @@ export default function Home() {
       <h2 className="text-2xl md:text-3xl font-bold mb-6">Latest Projects</h2>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition">
-          <h3 className="text-xl font-semibold mb-2">YouTube Meme Encyclopedia</h3>
-          <p className="text-gray-400 text-sm">The ultimate database of French YouTube references and cult memes.</p>
+          <h3 className="text-xl font-semibold mb-2">talaref?</h3>
+          <p className="text-gray-400 text-sm">best refs&memes.</p>
         </div>
         <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition">
-          <h3 className="text-xl font-semibold mb-2">Anything Rap Related Project</h3>
+          <h3 className="text-xl font-semibold mb-2">B2B</h3>
           <p className="text-gray-400 text-sm">bendo na bendo.</p>
         </div>
         <a
@@ -78,8 +78,8 @@ export default function Home() {
           href="/sanity-checker"
           className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex flex-col justify-between"
         >
-          <h3 className="text-xl font-semibold mb-2">Chrono-dégénérescence</h3>
-          <p className="text-gray-400 text-sm">🕒 a real-time roast engine</p>
+          <h3 className="text-xl font-semibold mb-2">rot.</h3>
+          <p className="text-gray-400 text-sm">🕒</p>
         </a>
       </div>
 
