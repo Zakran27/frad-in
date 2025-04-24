@@ -9,9 +9,9 @@ const openaiApiKey = process.env.OPENAI_API_KEY;
 
 const prompts = [
   "Écris une seule punchline de rap français, crue, originale et percutante. Une ligne. Pas de guillemets, pas d’intro. Ne sois pas poétique, sois réel, provocateur, brut ou drôle. Utilise du langage parlé ou familier si nécessaire. Aucun filtre.",
-  "Génère une punchline de rap français comme si c’était Booba, Alpha Wann ou Freeze Corleone. Une ligne, sèche, egotrip ou menaçante. Pas de fluff, pas d’explication.",
-  "Fais une punchline de rap français à l’ancienne, sombre ou absurde, mais percutante. Pas d’intro, une ligne brute, comme si c’était un freestyle.",
-  "Invente une punchline de rap FR qui pourrait choquer ou faire rire. Pas de métaphores chiantes. Une ligne, directe, efficace, que des vrais ressentent.",
+  "Génère une punchline de rap français comme si c’était Booba, Alpha Wann ou Freeze Corleone. Pas de guillemets. Une ligne, sèche, egotrip ou menaçante. Pas de fluff, pas d’explication.",
+  "Fais une punchline de rap français à l’ancienne, sombre ou absurde, mais percutante. Pas de guillemets. Pas d’intro, une ligne brute, comme si c’était un freestyle.",
+  "Invente une punchline de rap FR qui pourrait choquer ou faire rire. Pas de métaphores chiantes. Pas de guillemets. Une ligne, directe, efficace, que des vrais ressentent.",
 ];
 
 export async function GET() {
