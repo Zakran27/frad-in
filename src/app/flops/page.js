@@ -34,7 +34,7 @@ export default function FlopsPage() {
               onClick={() => toggleCard(flop.id)}
               className="w-full text-left p-6 text-lg font-semibold text-pink-400 hover:bg-gray-800 transition flex justify-between items-center"
             >
-              <span>{openCard === flop.id ? `🔊 ${flop.title}` : flop.title}</span>
+              <span>{openCard === flop.id ? `hush 🤫` : flop.title}</span>
               <span className="text-xl">{openCard === flop.id ? '⬆️' : '⬇️'}</span>
             </button>
             {openCard === flop.id && (
