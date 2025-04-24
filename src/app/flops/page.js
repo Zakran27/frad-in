@@ -2,7 +2,7 @@
 export const dynamic = 'force-dynamic'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '../../../lib/supabaseClient'
+import { supabase } from '/lib/supabaseClient'
 import Image from 'next/image'
 
 export default function FlopsPage() {
@@ -24,7 +24,7 @@ export default function FlopsPage() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-12 md:px-20 lg:px-32">
+    <main className="py-12">
       <h1 className="text-3xl md:text-4xl font-bold text-blue-500 mb-8">🫣 The Flops Collection</h1>
 
       <div className="space-y-6">

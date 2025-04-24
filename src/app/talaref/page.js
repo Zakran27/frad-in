@@ -1,0 +1,56 @@
+'use client'
+export const dynamic = 'force-dynamic'
+
+import { useEffect, useState } from 'react'
+import { supabase } from '/lib/supabaseClient'
+import Image from 'next/image'
+import Link from 'next/link'
+
+export default function TalarefList() {
+  const [entries, setEntries] = useState([])
+
+  useEffect(() => {
+    const fetchEntries = async () => {
+      const { data, error } = await supabase
+        .from('talaref_entries')
+        .select('*')
+        .order('id', { ascending: true })
+
+      if (error) console.error('Error fetching talaref entries:', error)
+      else setEntries(data)
+    }
+
+    fetchEntries()
+  }, [])
+
+  return (
+    <main className="py-12">
+      <h1 className="text-3xl md:text-4xl font-bold text-blue-500 mb-8">📚 Talaref?</h1>
+
+      <div className="grid gap-2 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+        {entries.map((entry) => (
+          <Link
+            key={entry.id}
+            href={`/talaref/${entry.slug}`}
+            className="bg-gray-900 border border-gray-700 rounded-lg hover:shadow-md hover:bg-gray-800 transition h-64 w-36 mx-auto p-3 flex flex-col justify-between items-center text-center"
+          >
+            <div className="flex-grow flex items-center justify-center">
+              {entry.thumbnail?.startsWith('http') ? (
+                <Image
+                  src={entry.thumbnail}
+                  alt={entry.title}
+                  width={64}
+                  height={64}
+                  className="object-cover rounded max-w-[64px] max-h-[64px]"
+                />
+              ) : (
+                <span className="text-5xl">{entry.thumbnail}</span>
+              )}
+            </div>
+            <h3 className="text-sm font-bold mt-4">{entry.title}</h3>
+          </Link>
+        ))}
+      </div>
+    </main>
+  )
+}

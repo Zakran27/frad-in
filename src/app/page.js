@@ -21,7 +21,7 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-12 md:px-20 lg:px-40 max-w-7xl mx-auto">
+    <main className="py-12">
       <h1 className="text-4xl md:text-5xl font-bold text-blue-500 mb-4">
         {title?.isLink ? (
           <Link href={title.href} target="_blank" rel="noopener noreferrer" className="hover:underline">
@@ -59,10 +59,14 @@ export default function Home() {
       {/* Project cards */}
       <h2 className="text-2xl md:text-3xl font-bold mb-6">Latest Projects</h2>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition">
-          <h3 className="text-xl font-semibold mb-2">talaref?</h3>
-          <p className="text-gray-400 text-sm">best refs&memes.</p>
-        </div>
+        <a
+          href="/talaref"
+          className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex flex-col justify-between"
+        >
+          <h3 className="text-xl font-semibold mb-2">talaref 📚</h3>
+          <p className="text-gray-400 text-sm">The pretty niche ref db to flex on your friends</p>
+        </a>
+
         <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition">
           <h3 className="text-xl font-semibold mb-2">B2B</h3>
           <p className="text-gray-400 text-sm">bendo na bendo.</p>
@@ -83,18 +87,6 @@ export default function Home() {
         </a>
       </div>
 
-      {/* Social links */}
-      <footer className="mt-16 flex flex-col items-start gap-4 text-sm text-gray-400">
-        <div className="flex items-center gap-4">
-          <a href="https://github.com/Zakran27" target="_blank" rel="noopener noreferrer" className="hover:text-white flex items-center gap-2">
-            <FaGithub /> GitHub
-          </a>
-          <a href="https://x.com/zakran27" target="_blank" rel="noopener noreferrer" className="hover:text-white flex items-center gap-2">
-            <FaTwitter /> Twitter
-          </a>
-        </div>
-        <p>© 2025 — Thomas Fradin de Bellabre. All rights reserved.</p>
-      </footer>
     </main>
   )
 }
