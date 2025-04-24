@@ -67,6 +67,13 @@ export default function Home() {
           <h3 className="text-xl font-semibold mb-2">Anything Rap Related Project</h3>
           <p className="text-gray-400 text-sm">bendo na bendo.</p>
         </div>
+        <a
+          href="/flops"
+          className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex items-center justify-center text-3xl"
+          title="Shhh... it's a secret"
+        >
+          💀
+        </a>
       </div>
 
       {/* Social links */}
