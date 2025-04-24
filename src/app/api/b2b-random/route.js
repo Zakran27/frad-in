@@ -45,7 +45,7 @@ export async function GET() {
   }
 
   // ⚠️ Only hit OpenAI if `isFake` is true
-  const prompt = `Génère une seule punchline de rap français inventée. Une seule ligne. Pas d’intro, pas d’explication. Juste la punchline.`;
+  const prompt = `Génère une seule punchline de rap français inventée. Une seule ligne. 200% Rap FR!!! Pas d’intro, pas d’explication. Juste la punchline.`;
 
   try {
     const res = await fetch("https://api.openai.com/v1/chat/completions", {
