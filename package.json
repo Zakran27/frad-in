@@ -16,7 +16,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
-    "react-twitter-embed": "^4.0.4"
+    "react-tweet": "^3.2.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

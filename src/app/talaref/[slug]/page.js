@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { supabase } from "/lib/supabaseClient";
 import Image from "next/image";
-import { TwitterTweetEmbed } from "react-twitter-embed";
+import { Tweet } from 'react-tweet'
 
 export default function TalarefEntryPage() {
   const { slug } = useParams();
@@ -27,12 +27,12 @@ export default function TalarefEntryPage() {
 
   const extractTweetId = (url) => {
     try {
-      const match = url.match(/status\/(\d+)/);
-      return match?.[1] || null;
-    } catch {
-      return null;
+      const match = url.match(/status\/(\d+)/)
+      return match?.[1] || null
+    } catch (e) {
+      return null
     }
-  };
+  }  
 
   if (!entry) return <p className="text-white p-10">Loading...</p>;
 
@@ -68,7 +68,7 @@ export default function TalarefEntryPage() {
           entry.link.includes("twitter.com") ? (
             <div className="w-full flex justify-center">
               <div className="max-w-xl w-full bg-black/10 p-4 rounded-md">
-                <TwitterTweetEmbed tweetId={extractTweetId(entry.link)} />
+                <Tweet id={extractTweetId(entry.link)} />
               </div>
             </div>
           ) : entry.media_type === "embed" ? (
