@@ -80,10 +80,13 @@ export default function Home() {
           </p>
         </Link>
 
-        <div className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition">
-          <h3 className="text-xl font-semibold mb-2">B2B</h3>
-          <p className="text-gray-400 text-sm">bendo na bendo.</p>
-        </div>
+        <Link
+          href="/b2b"
+          className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex flex-col justify-between"
+        >
+          <h3 className="text-xl font-semibold mb-2">B2B 🔥</h3>
+          <p className="text-gray-400 text-sm">bendo2bendo.</p>
+        </Link>
 
         <Link
           href="/flops"
@@ -110,7 +113,6 @@ export default function Home() {
             Find spots around you, instantly.
           </p>
         </Link>
-
       </div>
     </main>
   );
