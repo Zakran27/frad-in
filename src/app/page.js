@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaGithub, FaTwitter } from "react-icons/fa";
 
 export default function Home() {
   const [title, setTitle] = useState(null);

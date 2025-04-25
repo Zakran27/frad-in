@@ -1,6 +1,7 @@
 import './globals.css'
 import Link from 'next/link'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
+import { Toaster } from 'react-hot-toast'
 
 export const metadata = {
   title: 'bellab.re',
@@ -17,6 +18,24 @@ export default function RootLayout({ children }) {
             <span role="img" aria-label="planet">🪐</span> bellab.re
           </Link>
         </header>
+
+        {/* TOASTER */}
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: '#1f2937',
+              color: '#fff',
+              border: '1px solid #4b5563'
+            },
+            success: {
+              icon: '✅'
+            },
+            error: {
+              icon: '❌'
+            }
+          }}
+        />
 
         {/* MAIN CONTENT */}
         <main className="px-6 py-8 md:px-10 lg:px-24 xl:px-40 max-w-screen-2xl mx-auto">

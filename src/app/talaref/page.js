@@ -24,10 +24,18 @@ export default function TalarefList() {
   }, []);
 
   return (
-    <main className="py-12">
-      <h1 className="text-3xl md:text-4xl font-bold text-blue-500 mb-8">
-        📚 Talaref?
-      </h1>
+    <main className="py-12 px-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl md:text-4xl font-bold text-blue-500">
+          📚 Talaref?
+        </h1>
+        <Link
+          href="/talaref/add"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-semibold"
+        >
+          ➕ Add a Ref
+        </Link>
+      </div>
 
       <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
         {entries.map((entry) => (
