@@ -1,10 +1,10 @@
-// src/app/api/places-proxy/route.js
-export const runtime = 'nodejs' // Désactive Edge runtime (important pour fetch externe)
+export const runtime = 'nodejs'
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url)
   const lat = searchParams.get('lat')
   const lng = searchParams.get('lng')
+  const page = parseInt(searchParams.get('page') || '1')
 
   if (!lat || !lng) {
     return new Response(JSON.stringify({ error: 'Missing lat/lng parameters' }), {
@@ -13,12 +13,18 @@ export async function GET(req) {
     })
   }
 
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
-  const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=2000&type=restaurant&key=${apiKey}`
+  const serpApiKey = process.env.NEXT_PUBLIC_SERPAPI_KEY
+  const start = (page - 1) * 20 // 20 results per page
+
+  const url = `https://serpapi.com/search.json?engine=google_maps&ll=@${lat},${lng},15z&type=search&q=restaurant&start=${start}&api_key=${serpApiKey}`
 
   try {
     const response = await fetch(url)
     const data = await response.json()
+
+    if (data.error) {
+      return new Response(JSON.stringify({ error: data.error }), { status: 500 })
+    }
 
     return new Response(JSON.stringify(data), {
       headers: { 'Content-Type': 'application/json' }
