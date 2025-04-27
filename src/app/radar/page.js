@@ -2,11 +2,11 @@
 export const dynamic = "force-dynamic"
 
 import { useEffect, useState } from 'react'
-import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api'
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api'
 
 const containerStyle = {
   width: '100%',
-  height: '60vh'
+  height: '150px'
 }
 
 const defaultCenter = {
@@ -33,7 +33,6 @@ const emojiByCuisine = {
 export default function RestaurantRadar() {
   const [userLocation, setUserLocation] = useState(null)
   const [restaurants, setRestaurants] = useState([])
-  const [selectedPlaceId, setSelectedPlaceId] = useState(null)
   const [minRating, setMinRating] = useState(0)
   const [ratingChanged, setRatingChanged] = useState(false)
   const [page, setPage] = useState(1)
@@ -152,6 +151,7 @@ export default function RestaurantRadar() {
     <main className="py-12 px-6 bg-black text-white min-h-screen">
       <h1 className="text-3xl md:text-4xl font-bold text-blue-500 mb-6">🍜 Restaurant Radar</h1>
 
+      {/* Filter */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:gap-4">
         <label className="block text-sm text-gray-300 mb-2 sm:mb-0">
           Minimum rating: {minRating.toFixed(1)} ⭐
@@ -178,94 +178,72 @@ export default function RestaurantRadar() {
         )}
       </div>
 
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={userLocation || defaultCenter}
-        zoom={13}
-      >
-        {restaurants.map((place, idx) => {
-          if (!place.coordinates) return null
-          const placeId = place.place_id || `${place.title}-${place.address}`
-
-          return (
-            <Marker
-              key={placeId}
-              position={{
-                lat: place.coordinates.latitude,
-                lng: place.coordinates.longitude
-              }}
-              title={place.title}
-              onClick={() => setSelectedPlaceId(placeId)}
-            />
-          )
-        })}
-
-        {restaurants.map((place, idx) => {
-          if (!place.coordinates) return null
-          const placeId = place.place_id || `${place.title}-${place.address}`
-          if (selectedPlaceId !== placeId) return null
-
-          return (
-            <InfoWindow
-              key={`info-${placeId}`}
-              position={{
-                lat: place.coordinates.latitude,
-                lng: place.coordinates.longitude
-              }}
-              onCloseClick={() => setSelectedPlaceId(null)}
-            >
-              <div className="text-black max-w-xs">
-                <p className="font-bold">{place.title}</p>
-                {place.address && <p className="text-sm">{place.address}</p>}
-                {place.rating && (
-                  <p className="text-yellow-500 text-sm">
-                    {'⭐'.repeat(Math.floor(place.rating))} ({place.rating})
-                  </p>
-                )}
-              </div>
-            </InfoWindow>
-          )
-        })}
-      </GoogleMap>
-
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* List of restaurants */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {restaurants.map((place, idx) => {
           const cuisine = inferCuisine(place)
           const emoji = emojiByCuisine[cuisine] || "🍽️"
-          const placeId = place.place_id || `${place.title}-${place.address}`
 
           return (
             <div
-              key={placeId}
-              className="bg-gray-900 border border-gray-700 rounded-lg p-4 cursor-pointer hover:bg-gray-800 transition"
-              onClick={() => setSelectedPlaceId(placeId)}
+              key={idx}
+              className="bg-gray-900 border border-gray-700 rounded-lg overflow-hidden hover:bg-gray-800 transition flex flex-col"
             >
-              <p className="text-lg font-bold mb-1">{place.title}</p>
-              <p className="text-gray-400 text-sm mb-1">{place.address}</p>
+              {/* Mini Map */}
+              <div className="h-[150px] w-full relative">
+                <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={{
+                    lat: place.coordinates.latitude,
+                    lng: place.coordinates.longitude
+                  }}
+                  zoom={15}
+                >
+                  <Marker
+                    position={{
+                      lat: place.coordinates.latitude,
+                      lng: place.coordinates.longitude
+                    }}
+                  />
+                </GoogleMap>
+              </div>
 
-              {place.rating && (
-                <p className="text-yellow-400 text-sm mb-1">
-                  {'⭐'.repeat(Math.floor(place.rating))} ({place.rating})
-                </p>
-              )}
+              {/* Info */}
+              <div className="p-4 flex-grow flex flex-col justify-between">
+                <div>
+                  <p className="text-lg font-bold">{place.title}</p>
+                  <p className="text-gray-400 text-sm">{place.address}</p>
 
-              <p className="text-gray-400 text-xs italic mb-1">
-                {emoji} {cuisine}
-              </p>
+                  {place.rating && (
+                    <p className="text-yellow-400 text-sm mb-1">
+                      {'⭐'.repeat(Math.floor(place.rating))} ({place.rating})
+                    </p>
+                  )}
 
-              <a
-                href={place.link || `https://maps.google.com/?q=${place.title}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 text-sm mt-2 inline-block hover:underline"
-              >
-                📍 Open in Google Maps
-              </a>
+                  <p className="text-gray-400 text-xs italic mb-2">
+                    {emoji} {cuisine}
+                  </p>
+
+                  {place.description && (
+                    <p className="text-gray-500 text-xs">{place.description}</p>
+                  )}
+                </div>
+
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&origin=${userLocation?.lat},${userLocation?.lng}&destination=${place.coordinates.latitude},${place.coordinates.longitude}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 text-sm mt-4 inline-block hover:underline"
+                >
+                  📍 Get Itinerary
+                </a>
+              </div>
             </div>
           )
         })}
       </div>
 
+      {/* Pagination */}
       {hasMore && (
         <div className="flex justify-center mt-8">
           <button
