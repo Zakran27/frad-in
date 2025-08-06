@@ -24,7 +24,7 @@ export default function B2BGame() {
   }
 
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-4 py-12">
+    <div className="flex flex-col items-center justify-center min-h-[80vh] py-12">
       <h1 className="text-3xl font-bold text-red-500 mb-8">🔥 Bendo na Bendo</h1>
 
       {punchline ? (
@@ -87,6 +87,6 @@ export default function B2BGame() {
       ) : (
         <p className="text-gray-400">Loading punchline...</p>
       )}
-    </main>
+    </div>
   )
 }

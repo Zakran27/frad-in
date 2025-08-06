@@ -49,7 +49,7 @@ export default function SanityChecker() {
   const currentImage = degenerationImages[degenerationLevel];
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-black text-white text-center p-6">
+    <div className="min-h-[80vh] flex flex-col items-center justify-center text-center py-12">
       {showRoast && (
         <p className="text-xl md:text-2xl font-semibold text-pink-400 mb-6">{roast}</p>
       )}
@@ -70,6 +70,6 @@ export default function SanityChecker() {
           </p>
         </div>
       )}
-    </main>
+    </div>
   );
 }

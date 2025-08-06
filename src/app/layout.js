@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
         />
 
         {/* MAIN CONTENT */}
-        <main className="px-6 py-8 md:px-10 lg:px-24 xl:px-40 max-w-screen-2xl mx-auto">
+        <main className="px-4 py-6 sm:px-6 sm:py-8 md:px-10 lg:px-24 xl:px-40 max-w-screen-2xl mx-auto min-h-[calc(100vh-180px)]">
           {children}
         </main>
 

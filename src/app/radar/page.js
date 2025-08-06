@@ -138,7 +138,7 @@ export default function RestaurantRadar() {
 
   if (!isLoaded || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-black text-white">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
           <p>Loading restaurants...</p>
@@ -148,7 +148,7 @@ export default function RestaurantRadar() {
   }
 
   return (
-    <main className="py-12 px-6 bg-black text-white min-h-screen">
+    <div className="py-6">
       <h1 className="text-3xl md:text-4xl font-bold text-blue-500 mb-6">🍜 Restaurant Radar</h1>
 
       {/* Filter */}
@@ -179,7 +179,7 @@ export default function RestaurantRadar() {
       </div>
 
       {/* List of restaurants */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         {restaurants.map((place, idx) => {
           const cuisine = inferCuisine(place)
           const emoji = emojiByCuisine[cuisine] || "🍽️"
@@ -254,6 +254,6 @@ export default function RestaurantRadar() {
           </button>
         </div>
       )}
-    </main>
+    </div>
   )
 }

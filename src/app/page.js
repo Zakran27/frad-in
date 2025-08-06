@@ -68,7 +68,7 @@ export default function Home() {
 
       {/* Project cards */}
       <h2 className="text-2xl md:text-3xl font-bold mb-6">Latest Projects</h2>
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <Link
           href="/talaref"
           className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex flex-col justify-between"
