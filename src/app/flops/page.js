@@ -2,7 +2,6 @@
 export const dynamic = 'force-dynamic'
 
 import { useEffect, useState } from 'react'
-import { supabase } from '/lib/supabaseClient'
 import Image from 'next/image'
 
 export default function FlopsPage() {
@@ -15,9 +14,13 @@ export default function FlopsPage() {
 
   useEffect(() => {
     const fetchFlops = async () => {
-      const { data, error } = await supabase.from('flops').select('*').order('id', { ascending: true })
-      if (error) console.error('Error loading flops:', error)
-      else setFlops(data)
+      try {
+        const res = await fetch('/api/flops')
+        if (!res.ok) throw new Error('Request failed')
+        setFlops(await res.json())
+      } catch (err) {
+        console.error('Error loading flops:', err)
+      }
     }
 
     fetchFlops()

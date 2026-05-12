@@ -2,7 +2,6 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
-import { supabase } from "/lib/supabaseClient";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,15 +14,14 @@ export default function TalarefList() {
 
   useEffect(() => {
     const fetchEntries = async () => {
-      const { data, error } = await supabase
-        .from("talaref_entries")
-        .select("*")
-        .order("created_at", { ascending: false }); // ← Important: default newest first!
-
-      if (error) console.error("Error fetching talaref entries:", error);
-      else {
+      try {
+        const res = await fetch('/api/talaref');
+        if (!res.ok) throw new Error('Request failed');
+        const data = await res.json();
         setEntries(data);
         setFilteredEntries(data);
+      } catch (err) {
+        console.error("Error fetching talaref entries:", err);
       }
     };
 

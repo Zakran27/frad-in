@@ -3,7 +3,6 @@ export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { supabase } from "/lib/supabaseClient";
 import Image from "next/image";
 import { Tweet } from 'react-tweet'
 
@@ -13,13 +12,13 @@ export default function TalarefEntryPage() {
 
   useEffect(() => {
     const fetchEntry = async () => {
-      const { data, error } = await supabase
-        .from("talaref_entries")
-        .select("*")
-        .eq("slug", slug)
-        .single();
-      if (error) console.error(error);
-      else setEntry(data);
+      try {
+        const res = await fetch(`/api/talaref/${slug}`);
+        if (!res.ok) throw new Error('Request failed');
+        setEntry(await res.json());
+      } catch (err) {
+        console.error(err);
+      }
     };
 
     fetchEntry();

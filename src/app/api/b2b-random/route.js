@@ -1,9 +1,6 @@
-import { createClient } from "@supabase/supabase-js";
+import { sql } from '/lib/neonClient'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+export const dynamic = 'force-dynamic'
 
 const openaiApiKey = process.env.OPENAI_API_KEY;
 
@@ -17,37 +14,37 @@ const prompts = [
 export async function GET() {
   const isFake = Math.random() < 0.5;
 
-  // 🔥 Real punchline via Supabase RPC
+  // 🔥 Real punchline via Neon
   if (!isFake) {
-    const { data, error } = await supabase.rpc("get_random_punchline");
+    try {
+      const rows = await sql`SELECT * FROM public.get_random_punchline()`;
 
-    if (error) {
-      console.error("Supabase RPC error:", error.message);
-      return new Response(JSON.stringify({ error: "Supabase failed" }), {
+      if (!rows?.length) {
+        console.warn("No punchlines returned.");
+        return new Response(JSON.stringify({ error: "No data" }), {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      const real = rows[0];
+      return new Response(
+        JSON.stringify({
+          text: real.text,
+          isReal: true,
+          artist: real.artist,
+          title: real.title,
+          source: real.source,
+        }),
+        { headers: { "Content-Type": "application/json" } }
+      );
+    } catch (err) {
+      console.error("Neon RPC error:", err);
+      return new Response(JSON.stringify({ error: "DB failed" }), {
         status: 500,
         headers: { "Content-Type": "application/json" },
       });
     }
-
-    if (!data?.length) {
-      console.warn("No punchlines returned.");
-      return new Response(JSON.stringify({ error: "No data" }), {
-        status: 404,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    const real = data[0];
-    return new Response(
-      JSON.stringify({
-        text: real.text,
-        isReal: true,
-        artist: real.artist,
-        title: real.title,
-        source: real.source,
-      }),
-      { headers: { "Content-Type": "application/json" } }
-    );
   }
 
   // 🤖 Fake punchline via OpenAI

@@ -6,7 +6,7 @@
 [![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fbellab.re)](https://bellab.re)  
 [![Made with Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)  
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)  
-[![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white)](https://supabase.com/)  
+[![Neon](https://img.shields.io/badge/Neon-00E599?logo=neon&logoColor=white)](https://neon.tech/)  
 [![MIT License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 ---
@@ -26,13 +26,13 @@ A personal playground where I publish weird, smart, and fun stuff I build with m
 ## 🧪 Featured Projects
 
 - 🎲 **Bendo na Bendo (B2B)**  
-  Mini-game to guess if a French rap punchline is real or AI-generated. Uses Supabase for real punchlines and OpenAI API for fakes.
+  Mini-game to guess if a French rap punchline is real or AI-generated. Uses Neon Postgres for real punchlines and OpenAI API for fakes.
 
 - 🍽 **Restaurant Radar**  
   A Google Maps-based radar for nearby restaurants with filters, cuisine types, ratings and info popups. Built with the Places API.
 
 - 📚 **Talaref**  
-  A fun meme encyclopedia of French YouTube culture and "tala refs", backed by Supabase. Supports images, embeds, text, and tweet display.
+  A fun meme encyclopedia of French YouTube culture and "tala refs", backed by Neon Postgres + Vercel Blob storage. Supports images, embeds, text, and tweet display.
 
 - 🧼 **Sanity Checker**  
   Just because I needed a space to validate funny data, logic, or JSON things — manually or by script.
@@ -46,7 +46,8 @@ A personal playground where I publish weird, smart, and fun stuff I build with m
 | **Next.js** | App structure, SSR, routing       |
 | **Tailwind CSS** | Fast styling, responsive design |
 | **Vercel**  | Hosting, auto-deploy from GitHub  |
-| **Supabase** | Database + auth + serverless APIs |
+| **Neon** | Serverless Postgres database |
+| **Vercel Blob** | File storage for images/videos |
 | **OpenAI**  | AI punchline generation (GPT-3.5) |
 | **Google Maps / Places API** | Restaurant Radar |
 | **react-tweet** | Rendering tweets cleanly       |
@@ -55,7 +56,7 @@ A personal playground where I publish weird, smart, and fun stuff I build with m
 
 ## 🔌 APIs Used
 
-- ✅ `Supabase RPCs` for random punchline selection
+- ✅ `Neon Postgres` for random punchline selection (via SQL function)
 - 🔁 `OpenAI Chat Completion API` to generate French rap bars
 - 🍜 `Google Maps JavaScript SDK` & `Places API` for geolocation + restaurant info
 - 🐦 `react-tweet` to embed Twitter/X posts

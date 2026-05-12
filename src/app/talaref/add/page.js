@@ -2,7 +2,6 @@
 export const dynamic = "force-dynamic";
 
 import { useState } from 'react'
-import { supabase } from '/lib/supabaseClient'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
 
@@ -30,7 +29,6 @@ export default function AddTalarefPage() {
     e.preventDefault()
     setLoading(true)
 
-    // ✅ Validation des champs
     if (!form.title || !form.context || !form.media_type || (!form.link && !file)) {
       toast.error('All fields are required!')
       setLoading(false)
@@ -39,7 +37,6 @@ export default function AddTalarefPage() {
 
     let link = form.link.trim()
 
-    // ✅ YouTube link to embed
     if (
       form.media_type === 'video' &&
       (link.includes('youtube.com') || link.includes('youtu.be'))
@@ -53,20 +50,15 @@ export default function AddTalarefPage() {
 
     try {
       if (file) {
-        const filePath = `${Date.now()}-${file.name}`
-        const { data: uploadData, error: uploadError } = await supabase
-          .storage
-          .from('talaref-sources')
-          .upload(filePath, file)
-
-        if (uploadError) throw new Error(uploadError.message)
-
-        const { data: urlData } = supabase
-          .storage
-          .from('talaref-sources')
-          .getPublicUrl(filePath)
-
-        link = urlData.publicUrl
+        const formData = new FormData()
+        formData.append('file', file)
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData })
+        if (!uploadRes.ok) {
+          const errPayload = await uploadRes.json().catch(() => ({}))
+          throw new Error(errPayload.error || 'Upload failed')
+        }
+        const uploadJson = await uploadRes.json()
+        link = uploadJson.url
       }
 
       const slug = form.title
@@ -76,9 +68,10 @@ export default function AddTalarefPage() {
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "")
 
-      const { error: insertError } = await supabase
-        .from('talaref_entries')
-        .insert({
+      const insertRes = await fetch('/api/talaref', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           title: form.title.trim(),
           context: form.context.trim(),
           media_type: form.media_type,
@@ -86,8 +79,12 @@ export default function AddTalarefPage() {
           slug,
           thumbnail: form.thumbnail.trim()
         })
+      })
 
-      if (insertError) throw new Error(insertError.message)
+      if (!insertRes.ok) {
+        const errPayload = await insertRes.json().catch(() => ({}))
+        throw new Error(errPayload.error || 'Insert failed')
+      }
 
       toast.success('Ref added ✅')
       router.push('/talaref')

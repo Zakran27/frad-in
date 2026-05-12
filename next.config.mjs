@@ -4,11 +4,11 @@ const nextConfig = {
       remotePatterns: [
         {
           protocol: 'https',
-          hostname: 'jqrickrnwcgmkdekhqsu.supabase.co',
-          pathname: '/storage/v1/object/public/**',
+          hostname: '*.public.blob.vercel-storage.com',
+          pathname: '/**',
         },
       ],
     },
   }
-  
-  export default nextConfig  
+
+  export default nextConfig
