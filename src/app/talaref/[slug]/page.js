@@ -1,48 +1,45 @@
-"use client";
-export const dynamic = "force-dynamic";
-
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import Image from "next/image";
+import Image from 'next/image'
+import { notFound } from 'next/navigation'
 import { Tweet } from 'react-tweet'
+import { sql } from '@/lib/neonClient'
 
-export default function TalarefEntryPage() {
-  const { slug } = useParams();
-  const [entry, setEntry] = useState(null);
+export const dynamic = 'force-dynamic'
 
-  useEffect(() => {
-    const fetchEntry = async () => {
-      try {
-        const res = await fetch(`/api/talaref/${slug}`);
-        if (!res.ok) throw new Error('Request failed');
-        setEntry(await res.json());
-      } catch (err) {
-        console.error(err);
-      }
-    };
+function extractTweetId(url) {
+  const match = url?.match(/status\/(\d+)/)
+  return match?.[1] || null
+}
 
-    fetchEntry();
-  }, [slug]);
+export async function generateMetadata({ params }) {
+  const { slug } = await params
+  const rows = await sql`SELECT title, context FROM public.talaref_entries WHERE slug = ${slug} LIMIT 1`
+  if (rows.length === 0) return { title: 'Not found' }
+  return {
+    title: rows[0].title,
+    description: rows[0].context,
+  }
+}
 
-  const extractTweetId = (url) => {
-    try {
-      const match = url.match(/status\/(\d+)/)
-      return match?.[1] || null
-    } catch (e) {
-      return null
-    }
-  }  
+export default async function TalarefEntryPage({ params }) {
+  const { slug } = await params
+  const rows = await sql`
+    SELECT id, title, slug, thumbnail, media_type, link, context
+    FROM public.talaref_entries
+    WHERE slug = ${slug}
+    LIMIT 1
+  `
 
-  if (!entry) return <p className="text-white p-10">Loading...</p>;
+  if (rows.length === 0) notFound()
+  const entry = rows[0]
 
   return (
-    <main className="py-12">
+    <section className="py-12">
       <div className="max-w-screen-xl mx-auto">
         <h1 className="text-4xl font-bold text-blue-500 mb-2">{entry.title}</h1>
         <p className="mb-6 text-gray-300 text-lg">{entry.context}</p>
 
         <div className="border border-gray-700 rounded-lg bg-gray-900 p-4 md:p-6 lg:p-8 flex justify-center items-center">
-          {entry.media_type === "image" && (
+          {entry.media_type === 'image' && (
             <Image
               src={entry.link}
               alt={entry.title}
@@ -52,7 +49,7 @@ export default function TalarefEntryPage() {
             />
           )}
 
-          {entry.media_type === "video" && (
+          {entry.media_type === 'video' && (
             <div className="w-full aspect-video">
               <iframe
                 src={entry.link}
@@ -63,14 +60,13 @@ export default function TalarefEntryPage() {
             </div>
           )}
 
-          {entry.media_type === "embed" &&
-          entry.link.includes("twitter.com") ? (
+          {entry.media_type === 'embed' && entry.link.includes('twitter.com') ? (
             <div className="w-full flex justify-center">
               <div className="max-w-xl w-full bg-black/10 p-4 rounded-md">
                 <Tweet id={extractTweetId(entry.link)} />
               </div>
             </div>
-          ) : entry.media_type === "embed" ? (
+          ) : entry.media_type === 'embed' ? (
             <iframe
               src={entry.link}
               className="w-full h-[480px] rounded-md"
@@ -80,11 +76,11 @@ export default function TalarefEntryPage() {
             />
           ) : null}
 
-          {entry.media_type === "text" && (
+          {entry.media_type === 'text' && (
             <p className="text-lg text-center">{entry.link}</p>
           )}
         </div>
       </div>
-    </main>
-  );
+    </section>
+  )
 }

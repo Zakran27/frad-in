@@ -1,57 +1,56 @@
-'use client';
-export const dynamic = 'force-dynamic';
+'use client'
 
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 const getTimeRoast = (hour) => {
-  if (hour >= 0 && hour < 5) return "💀 It’s real n*** hours 🤙😏😏 go to sleep bro";
-  if (hour >= 5 && hour < 7) return "🌅 Sun’s not even up yet… why are you here?";
-  if (hour >= 22) return "🌙 You’re entering the danger zone…";
-  return "✅ All good. For now...";
-};
+  if (hour >= 0 && hour < 5) return "💀 It's real n*** hours 🤙😏😏 go to sleep bro"
+  if (hour >= 5 && hour < 7) return "🌅 Sun's not even up yet… why are you here?"
+  if (hour >= 22) return "🌙 You're entering the danger zone…"
+  return "✅ All good. For now..."
+}
+
+const degenerationMessages = [
+  '',
+  "you're still here huh…",
+  'bro for real, close the tab.',
+  'okay… starting to worry now',
+  'touch some grass. please.',
+  'internet detox imminent. browser self-destruct in 3... 2...',
+]
+
+const degenerationImages = [
+  '',
+  '/manu.jpeg',
+  '/bbh.jpg',
+  '/sip.jpeg',
+  '/abs.png',
+  '/tng.jpeg',
+]
 
 export default function SanityChecker() {
-  const [roast, setRoast] = useState('');
-  const [degenerationLevel, setDegenerationLevel] = useState(0);
+  const [hour, setHour] = useState(() => new Date().getHours())
+  const [degenerationLevel, setDegenerationLevel] = useState(0)
 
   useEffect(() => {
-    const hour = new Date().getHours();
-    setRoast(getTimeRoast(hour));
+    const hourTick = setInterval(() => setHour(new Date().getHours()), 60_000)
+    const levelTick = setInterval(() => {
+      setDegenerationLevel((lvl) => Math.min(lvl + 1, degenerationMessages.length - 1))
+    }, 10_000)
+    return () => {
+      clearInterval(hourTick)
+      clearInterval(levelTick)
+    }
+  }, [])
 
-    const interval = setInterval(() => {
-      setDegenerationLevel((lvl) => Math.min(lvl + 1, degenerationMessages.length - 1));
-    }, 10000); // Increase level every 10s
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const degenerationMessages = [
-    "", // Level 0: no message yet
-    "you’re still here huh…",
-    "bro for real, close the tab.",
-    "okay… starting to worry now",
-    "touch some grass. please.",
-    "internet detox imminent. browser self-destruct in 3... 2..."
-  ];
-
-  const degenerationImages = [
-    "", // Placeholder for level 0
-    "/manu.jpeg",
-    "/bbh.jpg",
-    "/sip.jpeg",
-    "/abs.png",
-    "/tng.jpeg"
-  ];
-
-  const showRoast = degenerationLevel === 0; // Only show initial roast if no degeneration yet
-  const currentMessage = degenerationMessages[degenerationLevel];
-  const currentImage = degenerationImages[degenerationLevel];
+  const showRoast = degenerationLevel === 0
+  const currentMessage = degenerationMessages[degenerationLevel]
+  const currentImage = degenerationImages[degenerationLevel]
 
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center text-center py-12">
       {showRoast && (
-        <p className="text-xl md:text-2xl font-semibold text-pink-400 mb-6">{roast}</p>
+        <p className="text-xl md:text-2xl font-semibold text-pink-400 mb-6">{getTimeRoast(hour)}</p>
       )}
 
       {degenerationLevel > 0 && (
@@ -71,5 +70,5 @@ export default function SanityChecker() {
         </div>
       )}
     </div>
-  );
+  )
 }

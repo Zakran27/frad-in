@@ -1,22 +1,12 @@
-import { sql } from '/lib/neonClient'
+import { sql } from '@/lib/neonClient'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
-  try {
-    const rows = await sql`
-      SELECT id, title, slug, thumbnail, media_type, link, context, created_at
-      FROM public.talaref_entries
-      ORDER BY created_at DESC
-    `
-    return Response.json(rows)
-  } catch (err) {
-    console.error('GET /api/talaref failed:', err)
-    return Response.json({ error: 'Failed to load talaref entries' }, { status: 500 })
-  }
-}
-
 export async function POST(request) {
+  if (request.headers.get('x-add-secret') !== process.env.ADD_SECRET) {
+    return Response.json({ error: 'Forbidden' }, { status: 403 })
+  }
+
   try {
     const body = await request.json()
     const { title, context, media_type, link, slug, thumbnail } = body

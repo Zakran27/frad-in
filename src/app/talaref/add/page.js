@@ -1,9 +1,11 @@
 'use client'
 export const dynamic = "force-dynamic";
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
+
+const SECRET_KEY = 'talaref_add_secret'
 
 export default function AddTalarefPage() {
   const router = useRouter()
@@ -16,6 +18,12 @@ export default function AddTalarefPage() {
   })
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [secret, setSecret] = useState('')
+
+  useEffect(() => {
+    const stored = typeof window !== 'undefined' ? sessionStorage.getItem(SECRET_KEY) : null
+    if (stored) setSecret(stored)
+  }, [])
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -28,6 +36,12 @@ export default function AddTalarefPage() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
+
+    if (!secret) {
+      toast.error('Secret required')
+      setLoading(false)
+      return
+    }
 
     if (!form.title || !form.context || !form.media_type || (!form.link && !file)) {
       toast.error('All fields are required!')
@@ -52,7 +66,11 @@ export default function AddTalarefPage() {
       if (file) {
         const formData = new FormData()
         formData.append('file', file)
-        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData })
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+          headers: { 'x-add-secret': secret },
+        })
         if (!uploadRes.ok) {
           const errPayload = await uploadRes.json().catch(() => ({}))
           throw new Error(errPayload.error || 'Upload failed')
@@ -70,7 +88,7 @@ export default function AddTalarefPage() {
 
       const insertRes = await fetch('/api/talaref', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-add-secret': secret },
         body: JSON.stringify({
           title: form.title.trim(),
           context: form.context.trim(),
@@ -86,6 +104,7 @@ export default function AddTalarefPage() {
         throw new Error(errPayload.error || 'Insert failed')
       }
 
+      sessionStorage.setItem(SECRET_KEY, secret)
       toast.success('Ref added ✅')
       router.push('/talaref')
     } catch (err) {
@@ -99,6 +118,17 @@ export default function AddTalarefPage() {
       <h1 className="text-3xl font-bold text-blue-500 mb-6">➕ Add a ref</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          type="password"
+          name="secret"
+          value={secret}
+          onChange={(e) => setSecret(e.target.value)}
+          required
+          placeholder="Secret"
+          autoComplete="current-password"
+          className="w-full p-2 rounded bg-gray-800 border border-gray-700"
+        />
+
         <input
           type="text"
           name="title"

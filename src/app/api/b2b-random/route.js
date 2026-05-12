@@ -1,4 +1,4 @@
-import { sql } from '/lib/neonClient'
+import { sql } from '@/lib/neonClient'
 
 export const dynamic = 'force-dynamic'
 
