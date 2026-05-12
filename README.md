@@ -28,9 +28,6 @@ A personal playground where I publish weird, smart, and fun stuff I build with m
 - 🎲 **Bendo na Bendo (B2B)**  
   Mini-game to guess if a French rap punchline is real or AI-generated. Uses Neon Postgres for real punchlines and OpenAI API for fakes.
 
-- 🍽 **Restaurant Radar**  
-  A Google Maps-based radar for nearby restaurants with filters, cuisine types, ratings and info popups. Built with the Places API.
-
 - 📚 **Talaref**  
   A fun meme encyclopedia of French YouTube culture and "tala refs", backed by Neon Postgres + Vercel Blob storage. Supports images, embeds, text, and tweet display.
 
@@ -49,7 +46,6 @@ A personal playground where I publish weird, smart, and fun stuff I build with m
 | **Neon** | Serverless Postgres database |
 | **Vercel Blob** | File storage for images/videos |
 | **OpenAI**  | AI punchline generation (GPT-3.5) |
-| **Google Maps / Places API** | Restaurant Radar |
 | **react-tweet** | Rendering tweets cleanly       |
 
 ---
@@ -58,7 +54,6 @@ A personal playground where I publish weird, smart, and fun stuff I build with m
 
 - ✅ `Neon Postgres` for random punchline selection (via SQL function)
 - 🔁 `OpenAI Chat Completion API` to generate French rap bars
-- 🍜 `Google Maps JavaScript SDK` & `Places API` for geolocation + restaurant info
 - 🐦 `react-tweet` to embed Twitter/X posts
 
 ---

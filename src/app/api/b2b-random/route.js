@@ -2,7 +2,7 @@ import { sql } from '/lib/neonClient'
 
 export const dynamic = 'force-dynamic'
 
-const openaiApiKey = process.env.OPENAI_API_KEY;
+const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
 
 const prompts = [
   "Écris une seule punchline de rap français, crue, originale et percutante. Une ligne. Pas de guillemets, pas d’intro. Ne sois pas poétique, sois réel, provocateur, brut ou drôle. Utilise du langage parlé ou familier si nécessaire. Aucun filtre.",
@@ -20,7 +20,6 @@ export async function GET() {
       const rows = await sql`SELECT * FROM public.get_random_punchline()`;
 
       if (!rows?.length) {
-        console.warn("No punchlines returned.");
         return new Response(JSON.stringify({ error: "No data" }), {
           status: 404,
           headers: { "Content-Type": "application/json" },
@@ -47,33 +46,31 @@ export async function GET() {
     }
   }
 
-  // 🤖 Fake punchline via OpenAI
+  // 🤖 Fake punchline via Claude
   const prompt = prompts[Math.floor(Math.random() * prompts.length)];
 
   try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${openaiApiKey}`,
+        "x-api-key": anthropicApiKey,
+        "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "claude-sonnet-4-6",
+        max_tokens: 100,
+        temperature: 1,
         messages: [{ role: "user", content: prompt }],
-        temperature: 1.2,
-        top_p: 1,
-        frequency_penalty: 0.2,
-        presence_penalty: 0.6,
-        max_tokens: 60,
       }),
     });
 
     const data = await res.json();
 
-    const text = data.choices?.[0]?.message?.content?.trim();
+    const text = data.content?.[0]?.text?.trim();
 
     if (!text) {
-      console.error("❌ Invalid OpenAI result:", JSON.stringify(data, null, 2));
+      console.error("❌ Invalid Claude result:", JSON.stringify(data, null, 2));
       return new Response(
         JSON.stringify({
           text: "🤖 AI punchline failed to load.",
@@ -91,10 +88,10 @@ export async function GET() {
       { headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {
-    console.error("❌ OpenAI request failed:", err);
+    console.error("❌ Claude request failed:", err);
     return new Response(
       JSON.stringify({
-        text: "🤖 OpenAI request error.",
+        text: "🤖 AI request error.",
         isReal: false,
       }),
       { headers: { "Content-Type": "application/json" } }
