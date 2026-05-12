@@ -1,4 +1,4 @@
-# 🐾 frad-in — Personal Playground of Thomas Fradin de Bellabre
+# 🐾 bellab.re — Personal Playground of Thomas Fradin de Bellabre
 
 > A modern, modular, and playful dev space to showcase my experiments, side projects, and tech oddities.  
 > Live at [https://bellab.re](https://bellab.re)
@@ -11,7 +11,7 @@
 
 ---
 
-## 🚀 What is `frad-in`?
+## 🚀 What is `bellab.re`?
 
 This is my digital garage.  
 A personal playground where I publish weird, smart, and fun stuff I build with modern web tools. Hosted on [bellab.re](https://bellab.re), this space is intentionally:
@@ -67,7 +67,7 @@ A personal playground where I publish weird, smart, and fun stuff I build with m
 Clone this repo and start developing:
 
 ```bash
-git clone https://github.com/Zakran27/frad-in.git
-cd frad-in
+git clone https://github.com/Zakran27/bellab.re.git
+cd bellab.re
 npm install
 npm run dev
