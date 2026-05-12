@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "@react-google-maps/api": "^2.20.6",
     "@supabase/supabase-js": "^2.49.4",
     "next": "15.3.6",
