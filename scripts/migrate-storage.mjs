@@ -42,8 +42,11 @@ function walk(dir, files = []) {
 async function main() {
   console.log('Extracting zip to temp dir...')
   const tmp = mkdtempSync(join(tmpdir(), 'storage-migrate-'))
-  // tar is available on modern Windows
-  execSync(`tar -xf "${ZIP_PATH}" -C "${tmp}"`)
+  // Use PowerShell's Expand-Archive so paths with C:\ are interpreted natively on Windows
+  execSync(
+    `powershell -NoProfile -Command "Expand-Archive -LiteralPath '${ZIP_PATH}' -DestinationPath '${tmp}' -Force"`,
+    { stdio: 'inherit' }
+  )
 
   const allFiles = walk(tmp).filter((f) => !f.endsWith('.emptyFolderPlaceholder'))
   console.log(`Found ${allFiles.length} files to upload.`)

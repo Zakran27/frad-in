@@ -44,3 +44,4 @@ next-env.d.ts
 scripts/_*.sql
 scripts/_*.json
 
+.env*.local
