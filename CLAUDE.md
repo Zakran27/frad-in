@@ -5,9 +5,9 @@ Thomas's personal playground, live at https://bellab.re. Jokes, side projects an
 **Not on Google, on purpose**: `robots: { index: false }` in `src/app/layout.js` plus `X-Robots-Tag: noindex` in `next.config.mjs`. No SEO work (no sitemap, no per-page SEO metadata).
 
 ## Stack
-Next.js 16 (App Router, JavaScript, no TypeScript) · React 19 · Tailwind CSS v4 (tokens in `src/app/globals.css`) · Neon Postgres via `@neondatabase/serverless` (tagged template `sql` in `src/lib/neonClient.js`) · Vercel Blob for uploads · Claude API through `@anthropic-ai/sdk` for the fake punchlines · Vercel (deploy on push to `master`). The GitHub repo is public.
+Next.js 16 (App Router, JavaScript, no TypeScript) · React 19 · Tailwind CSS v4 (tokens in `src/app/globals.css`) · Neon Postgres via `@neondatabase/serverless` (tagged template `sql` in `src/lib/neonClient.js`) · Vercel Blob for uploads · Vercel (deploy on push to `master`). No LLM API: the fake punchlines were written once and live in the DB. The GitHub repo is public.
 
-Env vars (names only): `DATABASE_URL` (production: role `web_app`, least privilege), `DATABASE_URL_UNPOOLED` (owner, for scripts), `ADD_SECRET`, `ANTHROPIC_API_KEY`, `BLOB_READ_WRITE_TOKEN`. The Development `ANTHROPIC_API_KEY` on Vercel is invalid (401): locally, fake punchlines fall back to the DB.
+Env vars (names only): `DATABASE_URL` (production: role `web_app`, least privilege), `DATABASE_URL_UNPOOLED` (owner, for scripts), `ADD_SECRET`, `BLOB_READ_WRITE_TOKEN`.
 
 ## Map
 - `/`: random title picked on the server (`src/lib/titles.js`), re-roll button (`HomeTitle.js`), Damien easter egg (`DamienToggle.js`), project cards.
@@ -18,8 +18,8 @@ Env vars (names only): `DATABASE_URL` (production: role `web_app`, least privile
 
 ## Database (Neon project `frad-in`, id `late-thunder-57069239`, eu-central-1)
 - Branches: `main` (production, managed by the Vercel integration) and `vercel-dev` (Development env). Schema changes go to both.
-- Tables: `talaref_entries`, `b2b_punchlines`, `flops`, `b2b_fakes` (AI punchlines pool); function `get_random_punchline()`.
-- Role `web_app` (production app): SELECT on the 4 tables, INSERT on `talaref_entries` and `b2b_fakes`, EXECUTE on the function. A new table or write needs a GRANT, otherwise production breaks.
+- Tables: `talaref_entries`, `b2b_punchlines` (real bars), `flops`, `b2b_fakes` (1000+ AI-written fake bars, static); function `get_random_punchline()`.
+- Role `web_app` (production app): SELECT on the 4 tables, INSERT on `talaref_entries` only, EXECUTE on the function. A new table or write needs a GRANT, otherwise production breaks. Add fakes with the owner role (Neon MCP).
 - Use the Neon MCP for schema and queries. Test a migration on `vercel-dev` first; destructive SQL only after Thomas says go.
 
 ## Working rules
@@ -27,7 +27,7 @@ Env vars (names only): `DATABASE_URL` (production: role `web_app`, least privile
 - Server Components by default; `"use client"` only for the interactive part, in its own file (pattern: `TalarefBrowser.js`, `HomeTitle.js`).
 - SQL only through the `sql` tagged template (parameterised). Never build SQL strings.
 - Media links (talaref, flops) go through `src/lib/media.js`: https and allowlisted hosts only, checked on insert and on render. Third-party iframes are sandboxed. `node src/lib/media.check.mjs` after touching it.
-- `/api/b2b-random` is public and calls Claude: the pool is capped (`FAKE_POOL_MAX`), so the total spend is bounded. Model `claude-haiku-5-5`, thinking disabled (one line only).
+- `/api/b2b-random` is public and only reads the DB: 50/50 between `b2b_punchlines` and `b2b_fakes`. A fake must never be an exact copy of a real bar.
 - `next/image` only loads Vercel Blob (`remotePatterns`). `public/` is served as is: only files meant to be public go there.
 
 ## Design principles (impeccable "Experience" mode, hallmark, jakubkrehel/skills)

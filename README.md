@@ -26,7 +26,7 @@ A personal playground where I publish weird, smart, and fun stuff I build with m
 ## 🧪 Featured Projects
 
 - 🎲 **Bendo na Bendo (B2B)**  
-  Mini-game to guess if a French rap punchline is real or AI-generated. Uses Neon Postgres for real punchlines and OpenAI API for fakes.
+  Mini-game to guess if a French rap punchline is real or AI-generated. Real punchlines and AI-written fakes both live in Neon Postgres (no API call at play time).
 
 - 📚 **Talaref**  
   A fun meme encyclopedia of French YouTube culture and "tala refs", backed by Neon Postgres + Vercel Blob storage. Supports images, embeds, text, and tweet display.
@@ -45,7 +45,6 @@ A personal playground where I publish weird, smart, and fun stuff I build with m
 | **Vercel**  | Hosting, auto-deploy from GitHub  |
 | **Neon** | Serverless Postgres database |
 | **Vercel Blob** | File storage for images/videos |
-| **OpenAI**  | AI punchline generation (GPT-3.5) |
 | **react-tweet** | Rendering tweets cleanly       |
 
 ---
@@ -53,7 +52,7 @@ A personal playground where I publish weird, smart, and fun stuff I build with m
 ## 🔌 APIs Used
 
 - ✅ `Neon Postgres` for random punchline selection (via SQL function)
-- 🔁 `OpenAI Chat Completion API` to generate French rap bars
+- 🤖 `b2b_fakes` table: 1000+ AI-written fake bars, generated once and stored (no API key needed)
 - 🐦 `react-tweet` to embed Twitter/X posts
 
 ---
