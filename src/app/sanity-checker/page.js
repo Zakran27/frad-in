@@ -7,7 +7,7 @@ const getTimeRoast = (hour) => {
   if (hour >= 0 && hour < 5) return "💀 It's real n*** hours 🤙😏😏 go to sleep bro"
   if (hour >= 5 && hour < 7) return "🌅 Sun's not even up yet… why are you here?"
   if (hour >= 22) return "🌙 You're entering the danger zone…"
-  return "✅ All good. For now..."
+  return '✅ All good. For now...'
 }
 
 const degenerationMessages = [
@@ -19,14 +19,7 @@ const degenerationMessages = [
   'internet detox imminent. browser self-destruct in 3... 2...',
 ]
 
-const degenerationImages = [
-  '',
-  '/manu.jpeg',
-  '/bbh.jpg',
-  '/sip.jpeg',
-  '/abs.png',
-  '/tng.jpeg',
-]
+const degenerationImages = ['', '/manu.jpeg', '/bbh.jpg', '/sip.jpeg', '/abs.png', '/tng.jpeg']
 
 export default function SanityChecker() {
   const [hour, setHour] = useState(() => new Date().getHours())
@@ -43,32 +36,36 @@ export default function SanityChecker() {
     }
   }, [])
 
-  const showRoast = degenerationLevel === 0
-  const currentMessage = degenerationMessages[degenerationLevel]
   const currentImage = degenerationImages[degenerationLevel]
 
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center text-center py-12">
-      {showRoast && (
-        <p className="text-xl md:text-2xl font-semibold text-pink-400 mb-6">{getTimeRoast(hour)}</p>
-      )}
-
-      {degenerationLevel > 0 && (
+    <section
+      aria-live="polite"
+      className="min-h-[70vh] flex flex-col items-center justify-center text-center"
+    >
+      {degenerationLevel === 0 ? (
+        <p className="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-balance max-w-3xl">
+          {getTimeRoast(hour)}
+        </p>
+      ) : (
         <div className="flex flex-col items-center">
           {currentImage && (
             <Image
               src={currentImage}
-              alt="degeneration"
+              alt=""
               width={200}
               height={200}
-              className="mb-6"
+              className="mb-8 rounded-2xl border border-line rotate-[-3deg]"
             />
           )}
-          <p className="text-lg md:text-xl text-red-400 italic animate-pulse">
-            {currentMessage}
+          <p className="font-display text-2xl sm:text-4xl font-bold text-signal italic motion-safe:animate-pulse">
+            {degenerationMessages[degenerationLevel]}
           </p>
         </div>
       )}
-    </div>
+      <p className="mt-10 font-mono text-sm text-muted">
+        rot level {degenerationLevel}/{degenerationMessages.length - 1}
+      </p>
+    </section>
   )
 }

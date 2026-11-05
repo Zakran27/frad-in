@@ -3,6 +3,10 @@
 import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { isBlobUrl } from '@/lib/media'
+
+const FIELD =
+  'w-full min-h-11 rounded-xl bg-ink-2 border border-line px-4 text-paper placeholder:text-muted focus:border-paper/50'
 
 export default function TalarefBrowser({ entries }) {
   const [searchQuery, setSearchQuery] = useState('')
@@ -45,7 +49,9 @@ export default function TalarefBrowser({ entries }) {
     const parts = text.split(new RegExp(`(${escaped})`, 'gi'))
     return parts.map((part, i) =>
       part.toLowerCase() === query.toLowerCase() ? (
-        <mark key={i} className="bg-yellow-300 text-black px-1 rounded">{part}</mark>
+        <mark key={i} className="bg-acid text-ink px-1 rounded">
+          {part}
+        </mark>
       ) : (
         part
       )
@@ -54,70 +60,73 @@ export default function TalarefBrowser({ entries }) {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-        <input
-          type="text"
-          placeholder="Search by title or context..."
-          className="bg-gray-800 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-1/3"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-
-        <select
-          className="bg-gray-800 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-1/5"
-          value={selectedType}
-          onChange={(e) => setSelectedType(e.target.value)}
-        >
-          <option value="all">All types</option>
-          <option value="image">Image</option>
-          <option value="video">Video</option>
-          <option value="embed">Embed</option>
-          <option value="text">Text</option>
-        </select>
-
-        <select
-          className="bg-gray-800 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-1/5"
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value)}
-        >
-          <option value="newest">Newest first</option>
-          <option value="oldest">Oldest first</option>
-          <option value="az">A-Z</option>
-          <option value="za">Z-A</option>
-        </select>
+      <div className="grid gap-3 sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] mb-8">
+        <label className="block">
+          <span className="sr-only">Search</span>
+          <input
+            type="search"
+            placeholder="Search by title or context…"
+            className={FIELD}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </label>
+        <label className="block">
+          <span className="sr-only">Type</span>
+          <select className={FIELD} value={selectedType} onChange={(e) => setSelectedType(e.target.value)}>
+            <option value="all">All types</option>
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+            <option value="embed">Embed</option>
+            <option value="text">Text</option>
+          </select>
+        </label>
+        <label className="block">
+          <span className="sr-only">Sort</span>
+          <select className={FIELD} value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="az">A-Z</option>
+            <option value="za">Z-A</option>
+          </select>
+        </label>
       </div>
 
-      <div className="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+      <ul className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
         {filteredEntries.map((entry) => (
-          <Link
-            key={entry.id}
-            href={`/talaref/${entry.slug}`}
-            className="bg-gray-900 border border-gray-700 rounded-lg hover:shadow-md hover:bg-gray-800 transition h-64 min-w-[8rem] p-3 flex flex-col justify-between items-center text-center"
-          >
-            <div className="flex-grow flex items-center justify-center">
-              {entry.thumbnail?.startsWith('http') ? (
-                <Image
-                  src={entry.thumbnail}
-                  alt={entry.title}
-                  width={64}
-                  height={64}
-                  className="object-cover rounded max-w-[64px] max-h-[64px]"
-                />
-              ) : (
-                <span className="text-5xl">{entry.thumbnail}</span>
-              )}
-            </div>
-            <h3 className="text-sm font-bold mt-4 break-words">
-              {highlightText(entry.title, searchQuery)}
-            </h3>
-          </Link>
+          <li key={entry.id}>
+            <Link
+              href={`/talaref/${entry.slug}`}
+              className="group h-56 rounded-2xl bg-ink-2 border border-line p-4 flex flex-col justify-between hover:border-paper/40 hover:bg-ink-3 transition-colors"
+            >
+              <div className="flex-grow flex items-center justify-center">
+                {isBlobUrl(entry.thumbnail) ? (
+                  <Image
+                    src={entry.thumbnail}
+                    alt=""
+                    width={80}
+                    height={80}
+                    className="object-cover rounded-xl size-20 transition-transform motion-safe:group-hover:rotate-[-3deg]"
+                  />
+                ) : (
+                  <span
+                    aria-hidden="true"
+                    className="text-5xl transition-transform motion-safe:group-hover:scale-110"
+                  >
+                    {entry.thumbnail}
+                  </span>
+                )}
+              </div>
+              <h2 className="font-display font-bold leading-tight [overflow-wrap:anywhere]">
+                {highlightText(entry.title, searchQuery)}
+              </h2>
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
 
       {filteredEntries.length === 0 && (
-        <p className="text-gray-400 text-center mt-12">
-          😔 No entries match your filters...
-        </p>
+        <p className="text-muted text-center mt-12">😔 No entries match your filters…</p>
       )}
     </>
   )

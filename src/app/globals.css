@@ -1,12 +1,34 @@
 @import "tailwindcss";
 
-:root {
-  --background: #0a0a0a;
-  --foreground: #ffffff;
+/* Identité bellab.re : carnet de labo sombre et chaud, un seul accent (signal), un rappel (acid). */
+@theme {
+  --color-ink: #0f0e0c;
+  --color-ink-2: #1a1815;
+  --color-ink-3: #24211c;
+  --color-line: #36312a;
+  --color-paper: #efe9dc;
+  --color-muted: #a8a090;
+  --color-signal: #ff5b1f;
+  --color-acid: #d4ff3a;
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
+  --font-sans: var(--font-instrument), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+html { overflow-x: clip; }
+body { overflow-x: clip; }
+
+::selection { background: var(--color-acid); color: var(--color-ink); }
+
+:focus-visible {
+  outline: 2px solid var(--color-acid);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001s !important;
+    transition-duration: 0.001s !important;
+  }
 }

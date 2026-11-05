@@ -1,109 +1,61 @@
-"use client";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import Link from 'next/link'
+import HomeTitle from './HomeTitle'
+import DamienToggle from './DamienToggle'
+import { randomTitleIndex } from '@/lib/titles'
+
+// Un titre différent à chaque visite, présent dès le HTML (pas de flash au chargement)
+export const dynamic = 'force-dynamic'
+
+const card =
+  'group rounded-2xl p-6 sm:p-7 flex flex-col justify-between gap-6 transition-transform motion-safe:hover:-translate-y-0.5'
 
 export default function Home() {
-  const [title, setTitle] = useState(null);
-  const [showDamien, setShowDamien] = useState(false);
-
-  useEffect(() => {
-    const options = [
-      { text: "🩰 Ballerrrinaaa ☕ Cappuccciiiinnnaa" },
-      { text: "Aaarhghaaggga..... 💀" },
-      { text: "😲 (**visage choqué**)" },
-      {
-        isLink: true,
-        text: "Click here to know what time it is 🕒",
-        href: "http://quelleheureestilenjoy.com/",
-      },
-      { text: "hmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm" },
-    ];
-    const random = options[Math.floor(Math.random() * options.length)];
-    setTitle(random);
-  }, []);
-
   return (
-    <main className="py-12">
-      <h1 className="text-4xl md:text-5xl font-bold text-blue-500 mb-4">
-        {title?.isLink ? (
-          <a
-            href={title.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:underline"
+    <>
+      <section className="pt-4 sm:pt-10">
+        <HomeTitle initial={randomTitleIndex()} />
+        <p className="mt-8 text-lg sm:text-xl text-muted max-w-2xl">
+          A playground of side projects, dumb jokes, and weird experiments.
+        </p>
+        <DamienToggle />
+      </section>
+
+      <section aria-labelledby="projects" className="mt-16 sm:mt-24">
+        <h2 id="projects" className="font-display text-2xl sm:text-3xl font-bold tracking-tight">
+          Latest projects
+        </h2>
+        <div className="mt-6 grid gap-4 grid-cols-2 sm:grid-cols-6 sm:auto-rows-[minmax(9rem,auto)]">
+          <Link
+            href="/talaref"
+            className={`${card} col-span-2 sm:col-span-4 sm:row-span-2 bg-ink-2 border border-line hover:border-paper/40 min-h-64`}
           >
-            {title.text}
-          </a>
-        ) : (
-          title?.text
-        )}
-      </h1>
+            <span className="text-6xl" aria-hidden="true">📚</span>
+            <div>
+              <h3 className="font-display text-4xl sm:text-5xl font-extrabold tracking-tight">talaref</h3>
+              <p className="mt-2 text-muted max-w-md">The pretty niche ref db to flex on your friends.</p>
+            </div>
+          </Link>
 
-      <p className="text-lg mb-8 text-gray-300">
-        A playground of side projects, dumb jokes, and weird experiments.
-      </p>
+          <Link href="/b2b" className={`${card} col-span-2 bg-signal text-ink`}>
+            <h3 className="font-display text-3xl font-extrabold tracking-tight">B2B 🔥</h3>
+            <p className="font-medium">Real French rap punchline, or AI? bendo2bendo.</p>
+          </Link>
 
-      {/* Damien toggle section */}
-      <div className="mb-10">
-        <button
-          onClick={() => setShowDamien(!showDamien)}
-          className="text-pink-400 font-semibold mb-4 hover:underline transition flex items-center gap-2"
-        >
-          {showDamien ? "Hide Damien 🐶⬆️" : "Show Damien 🐶⬇️"}
-        </button>
-        {showDamien && (
-          <div>
-            <p className="mb-2">Your grosse daronne Damien :D</p>
-            <Image
-              src="/damien.jpg"
-              width={250}
-              height={250}
-              alt="Damien"
-              className="rounded-lg border border-white w-full max-w-[250px]"
-            />
-          </div>
-        )}
-      </div>
+          <Link
+            href="/flops"
+            title="Shhh... it's a secret"
+            className={`${card} bg-ink-3 border border-line items-center justify-center text-5xl`}
+          >
+            <span aria-hidden="true">💀</span>
+            <span className="sr-only">flops (secret)</span>
+          </Link>
 
-      {/* Project cards */}
-      <h2 className="text-2xl md:text-3xl font-bold mb-6">Latest Projects</h2>
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <Link
-          href="/talaref"
-          className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex flex-col justify-between"
-        >
-          <h3 className="text-xl font-semibold mb-2">talaref 📚</h3>
-          <p className="text-gray-400 text-sm">
-            The pretty niche ref db to flex on your friends
-          </p>
-        </Link>
-
-        <Link
-          href="/b2b"
-          className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex flex-col justify-between"
-        >
-          <h3 className="text-xl font-semibold mb-2">B2B 🔥</h3>
-          <p className="text-gray-400 text-sm">bendo2bendo.</p>
-        </Link>
-
-        <Link
-          href="/flops"
-          className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex items-center justify-center text-3xl"
-          title="Shhh... it's a secret"
-        >
-          💀
-        </Link>
-
-        <Link
-          href="/sanity-checker"
-          className="bg-gray-900 border border-gray-700 rounded-lg p-6 shadow hover:shadow-lg transition flex flex-col justify-between"
-        >
-          <h3 className="text-xl font-semibold mb-2">rot.</h3>
-          <p className="text-gray-400 text-sm">🕒</p>
-        </Link>
-
-      </div>
-    </main>
-  );
+          <Link href="/sanity-checker" className={`${card} bg-acid text-ink`}>
+            <h3 className="font-display text-2xl font-extrabold">rot.</h3>
+            <span className="text-3xl" aria-hidden="true">🕒</span>
+          </Link>
+        </div>
+      </section>
+    </>
+  )
 }

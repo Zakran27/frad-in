@@ -8,13 +8,14 @@ export default function GlobalError({ error, reset }) {
   }, [error])
 
   return (
-    <section className="min-h-[60vh] flex flex-col items-center justify-center text-center py-12">
-      <h1 className="text-6xl mb-4">💥</h1>
-      <h2 className="text-2xl font-bold text-red-500 mb-2">Something broke</h2>
-      <p className="text-gray-400 mb-6">An unexpected error happened. Try again?</p>
+    <section className="min-h-[60vh] flex flex-col items-center justify-center text-center">
+      <p className="text-6xl" aria-hidden="true">💥</p>
+      <h1 className="mt-4 font-display text-3xl font-extrabold">Something broke</h1>
+      <p className="mt-2 text-muted">An unexpected error happened. Try again?</p>
       <button
+        type="button"
         onClick={reset}
-        className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white font-semibold"
+        className="mt-6 min-h-11 px-6 rounded-full bg-paper text-ink font-semibold hover:bg-acid active:scale-95 transition"
       >
         Retry
       </button>

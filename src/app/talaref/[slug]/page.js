@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Tweet } from 'react-tweet'
 import { sql } from '@/lib/neonClient'
@@ -35,12 +36,17 @@ export default async function TalarefEntryPage({ params }) {
   const tweet = entry.media_type === 'embed' ? tweetId(media) : null
 
   return (
-    <section className="py-12">
-      <div className="max-w-screen-xl mx-auto">
-        <h1 className="text-4xl font-bold text-blue-500 mb-2">{entry.title}</h1>
-        <p className="mb-6 text-gray-300 text-lg">{entry.context}</p>
+    <section>
+      <div className="max-w-4xl">
+        <Link href="/talaref" className="inline-flex min-h-11 items-center font-mono text-sm text-muted hover:text-paper">
+          ← all refs
+        </Link>
+        <h1 className="mt-2 font-display text-4xl sm:text-6xl font-extrabold tracking-tight text-balance [overflow-wrap:anywhere]">
+          {entry.title}
+        </h1>
+        <p className="mt-4 mb-8 text-lg text-muted max-w-2xl">{entry.context}</p>
 
-        <div className="border border-gray-700 rounded-lg bg-gray-900 p-4 md:p-6 lg:p-8 flex justify-center items-center">
+        <div className="rounded-3xl bg-ink-2 border border-line p-4 sm:p-6 lg:p-8 flex justify-center items-center">
           {entry.media_type === 'image' && isBlobUrl(media) && (
             <Image
               src={media}
@@ -91,11 +97,11 @@ export default async function TalarefEntryPage({ params }) {
           )}
 
           {entry.media_type !== 'text' && !media && (
-            <p className="text-gray-400 text-center">Lien non affiché (hôte non autorisé).</p>
+            <p className="text-muted text-center">Link hidden (host not allowed).</p>
           )}
 
           {entry.media_type === 'text' && (
-            <p className="text-lg text-center">{entry.link}</p>
+            <p className="font-display text-2xl sm:text-3xl font-bold text-center text-balance [overflow-wrap:anywhere]">{entry.link}</p>
           )}
         </div>
       </div>

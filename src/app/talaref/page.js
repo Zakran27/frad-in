@@ -17,14 +17,21 @@ export default async function TalarefList() {
   `
 
   return (
-    <section className="py-12 px-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl md:text-4xl font-bold text-blue-500">📚 Talaref?</h1>
+    <section>
+      <div className="flex flex-wrap justify-between items-end gap-4 mb-8">
+        <div>
+          <h1 className="font-display text-4xl sm:text-6xl font-extrabold tracking-tight">
+            talaref<span className="text-signal">?</span>
+          </h1>
+          <p className="mt-2 text-muted">
+            {entries.length} refs to flex on your friends.
+          </p>
+        </div>
         <Link
           href="/talaref/add"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-semibold"
+          className="inline-flex items-center min-h-11 px-5 rounded-full bg-paper text-ink font-semibold hover:bg-acid active:scale-95 transition"
         >
-          ➕ Add a Ref
+          Add a ref
         </Link>
       </div>
 
