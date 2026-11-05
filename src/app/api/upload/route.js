@@ -3,10 +3,11 @@ import { put } from '@vercel/blob'
 export const dynamic = 'force-dynamic'
 
 const MAX_BYTES = 25 * 1024 * 1024 // 25 MB
+// SVG exclu : une image SVG peut embarquer du script
 const ALLOWED_PREFIXES = ['image/', 'video/', 'audio/']
 
 export async function POST(request) {
-  if (request.headers.get('x-add-secret') !== process.env.ADD_SECRET) {
+  if (!hasAddSecret(request)) {
     return Response.json({ error: 'Forbidden' }, { status: 403 })
   }
 
@@ -19,7 +20,7 @@ export async function POST(request) {
     if (file.size > MAX_BYTES) {
       return Response.json({ error: `File too large (max ${MAX_BYTES / 1024 / 1024} MB)` }, { status: 413 })
     }
-    if (!ALLOWED_PREFIXES.some((p) => (file.type || '').startsWith(p))) {
+    if (!ALLOWED_PREFIXES.some((p) => (file.type || '').startsWith(p)) || file.type === 'image/svg+xml') {
       return Response.json({ error: 'Unsupported file type' }, { status: 415 })
     }
 
@@ -33,6 +34,6 @@ export async function POST(request) {
     return Response.json({ url: blob.url })
   } catch (err) {
     console.error('POST /api/upload failed:', err)
-    return Response.json({ error: err.message || 'Upload failed' }, { status: 500 })
+    return Response.json({ error: 'Upload failed' }, { status: 500 })
   }
 }

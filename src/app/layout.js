@@ -32,9 +32,10 @@ export const metadata = {
   icons: {
     icon: '/favicon.ico',
   },
+  // Site perso : pas dans les moteurs de recherche (doublé par X-Robots-Tag dans next.config.mjs)
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
   },
 }
 

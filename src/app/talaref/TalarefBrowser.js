@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -40,7 +40,9 @@ export default function TalarefBrowser({ entries }) {
 
   const highlightText = (text, query) => {
     if (!query) return text
-    const parts = text.split(new RegExp(`(${query})`, 'gi'))
+    // Recherche littérale : une parenthèse ou un point dans la recherche ne doit pas casser la page
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const parts = text.split(new RegExp(`(${escaped})`, 'gi'))
     return parts.map((part, i) =>
       part.toLowerCase() === query.toLowerCase() ? (
         <mark key={i} className="bg-yellow-300 text-black px-1 rounded">{part}</mark>
